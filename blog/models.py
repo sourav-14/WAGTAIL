@@ -129,7 +129,7 @@ class BlogDetailPage(Page):
     template = "blog/blog_detail.html"
     custom_title = models.CharField(
         max_length = 100,
-        blank = False,
+        blank = True,
         null = True,
         help_text = 'Overwrites the default title'
     )
@@ -167,5 +167,62 @@ class BlogDetailPage(Page):
                 FieldPanel("categories",widget= forms.CheckboxSelectMultiple)
             ],heading="Categories"
         ),
+        StreamFieldPanel("content"),
+    ]
+
+
+class ArticlePage(BlogDetailPage):
+    """ Subclassed Page inheriting from BlogDetail Page """
+
+    template = "blog/article_blog_page.html"
+    subtitle = models.CharField(max_length=100,blank=True,null=True)
+    intro_image = models.ForeignKey("wagtailimages.Image",blank=True,null=True,on_delete=models.SET_NULL)
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("custom_title"),
+                FieldPanel("subtitle"),
+            ],heading="Sub Title"
+        ),
+        MultiFieldPanel( [
+                ImageChooserPanel("blog_image"),
+                ImageChooserPanel("intro_image"),
+            ],heading="Images"
+        ),
+        MultiFieldPanel(
+            [
+                InlinePanel("blog_authors",label="Author",min_num=1,max_num=4)
+            ],heading="Author(s)"
+        ), 
+        MultiFieldPanel(
+            [
+                FieldPanel("categories",widget= forms.CheckboxSelectMultiple)
+            ],heading="Categories"
+        ),
+        StreamFieldPanel("content"),
+    ]
+
+
+
+class VideoBlogPage(BlogDetailPage):
+
+    youtube_video_id = models.CharField(max_length=100)
+
+
+    content_panels = Page.content_panels + [
+        FieldPanel("custom_title"),
+        ImageChooserPanel("blog_image"),
+        MultiFieldPanel(
+            [
+                InlinePanel("blog_authors",label="Author",min_num=1,max_num=4)
+            ],heading="Author(s)"
+        ), 
+        MultiFieldPanel(
+            [
+                FieldPanel("categories",widget= forms.CheckboxSelectMultiple)
+            ],heading="Categories"
+        ),
+        FieldPanel("youtube_video_id"),
         StreamFieldPanel("content"),
     ]
