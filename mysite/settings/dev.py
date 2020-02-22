@@ -17,6 +17,7 @@ MIDDLEWARE =  MIDDLEWARE + [
 
 INSTALLED_APPS = INSTALLED_APPS + [
     'debug_toolbar',
+    'wagtail.contrib.styleguide'
 ]
 
 INTERNAL_IPS = ["127.0.0.1"]

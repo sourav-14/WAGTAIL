@@ -125,6 +125,14 @@ register_snippet(BlogCategory)
 class BlogListingPage(RoutablePageMixin,Page):
 
     template = "blog/bloglisting.html"
+    #ajax_template = "blog/blog_ajax_listing.html"
+    max_count = 1
+
+    subpage_types =[
+        'blog.VideoBlogPage',
+        'blog.ArticlePage',
+    ]
+
     custom_title = models.CharField(
         max_length = 100,
         blank = False,
@@ -136,8 +144,8 @@ class BlogListingPage(RoutablePageMixin,Page):
 
         context = super().get_context(request,*args,**kwargs)
         all_posts = BlogDetailPage.objects.live().public().order_by("-first_published_at") 
-
-
+        
+    
         paginator = Paginator(all_posts,2)
 
         page = request.GET.get("page")
@@ -168,9 +176,13 @@ class BlogListingPage(RoutablePageMixin,Page):
         return render(request,"blog/latest_posts.html",context)
 
 
+
 class BlogDetailPage(Page):
 
     template = "blog/blog_detail.html"
+    subpage_types =[]
+    parent_page_types = ['blog.BlogListingPage']
+
     custom_title = models.CharField(
         max_length = 100,
         blank = True,

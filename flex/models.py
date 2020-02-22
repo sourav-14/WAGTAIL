@@ -10,6 +10,15 @@ from streams import blocks
 class FlexPage(Page):
 
     template = "flex/flex_page.html"
+
+    parent_page_types = [
+        'flex.Flexpage',
+        'home.HomePage',
+    ]
+    subpage_types = [
+        'flex.FlexPage',
+        'contact.ContactPage',
+    ]
     subtitle = models.CharField(max_length=100,null=True,blank=True)
     
     content = StreamField(

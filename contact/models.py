@@ -19,6 +19,8 @@ class FormField(AbstractFormField):
 class ContactPage(WagtailCaptchaEmailForm):
     
     template = "contact/contact_page.html"
+    parent_page_types = ['home.HomePage']
+    subpage_types = []
 
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)      
