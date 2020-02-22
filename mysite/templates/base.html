@@ -1,5 +1,6 @@
 {% load static wagtailuserbar %}
 
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
@@ -60,22 +61,22 @@
 
         {% block content %}{% endblock %}
 
-        <div class="container" style="padding:1% 1%;">
+        <div class="container" style="padding:4% 3%;">
           <div class="row">
               <div class="col-lg-12 text-center">
                   {% if settings.site_settings.SocialMediaSettings.facebook %}
                       <a href="{{ settings.site_settings.SocialMediaSettings.facebook }}">
-                          <i class="fab fa-facebook-f "></i>
+                          <i class="fab fa-facebook-f fa-3x"></i>
                       </a>
                   {% endif %}
                   {% if settings.site_settings.SocialMediaSettings.twitter %}
                       <a href="{{ settings.site_settings.SocialMediaSettings.twitter }}">
-                          <i class="fab fa-twitter"></i>
+                          <i class="fab fa-twitter fa-3x" style="padding-left:3% ;"></i>
                       </a>
                   {% endif %}
                   {% if settings.site_settings.SocialMediaSettings.youtube %}
                       <a href="{{ settings.site_settings.SocialMediaSettings.youtube }}">
-                          <i class="fab fa-youtube"></i>
+                          <i class="fab fa-youtube fa-3x" style="padding-left:3% ;"></i>
                       </a>
                   {% endif %}
               </div>

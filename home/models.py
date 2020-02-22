@@ -3,6 +3,8 @@ from django.db import models
 from django.shortcuts import render
 from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page,Orderable
+
+from wagtail.api import APIField
 from wagtail.admin.edit_handlers import FieldPanel,PageChooserPanel,StreamFieldPanel,InlinePanel,MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel  
 from wagtail.core.fields import StreamField
@@ -21,6 +23,11 @@ class HomePageCarousel(Orderable):
         ImageChooserPanel("carousel_image")
     ]
 
+
+    api_fields = [
+        APIField("carousel_image"),
+    ]
+ 
 
 class HomePage(RoutablePageMixin,Page):
     
@@ -42,6 +49,15 @@ class HomePage(RoutablePageMixin,Page):
         null =True,
         blank=True,
     )
+
+    api_fields = [
+        APIField("banner_title"),
+        APIField("banner_subtitle"),
+        APIField("banner_image"),
+        APIField("banner_cta"),
+        APIField("carousel_images"),
+    ]
+
 
     content_panels= Page.content_panels + [
         MultiFieldPanel([

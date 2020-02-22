@@ -2,7 +2,10 @@ from django.db import models
 from django.shortcuts import render
 
 from django import forms
+from django.core.paginator import PageNotAnInteger,EmptyPage,Paginator
 from modelcluster.fields import ParentalKey,ParentalManyToManyField
+from wagtail.api import APIField
+
 from wagtail.core.models import Page,Orderable
 from wagtail.admin.edit_handlers import FieldPanel,StreamFieldPanel,MultiFieldPanel,InlinePanel
 from wagtail.core.fields import StreamField
@@ -106,11 +109,26 @@ class BlogListingPage(RoutablePageMixin,Page):
     def get_context(self,request,*args,**kwargs):
 
         context = super().get_context(request,*args,**kwargs)
-        context["posts"] = BlogDetailPage.objects.live().public() 
-        context["categories"] = BlogCategory.objects.all()
+        all_posts = BlogDetailPage.objects.live().public().order_by("-first_published_at") 
 
+
+        paginator = Paginator(all_posts,2)
+
+        page = request.GET.get("page")
+        try:
+            posts=paginator.page(page)
+        except PageNotAnInteger:
+            posts=paginator.page(1)
+        except EmptyPage:
+            posts=paginator.page(paginator.num_pages)
+
+        context["posts"] = posts
+        context["categories"] = BlogCategory.objects.all()
+   
         #context["authors"] = BlogAuthor.all()
         return context
+
+
 
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
@@ -171,6 +189,12 @@ class BlogDetailPage(Page):
     ]
 
 
+    api_fields =[
+        APIField("blog_authors"),
+        APIField("content"),
+
+    ]
+
 class ArticlePage(BlogDetailPage):
     """ Subclassed Page inheriting from BlogDetail Page """
 
@@ -202,6 +226,7 @@ class ArticlePage(BlogDetailPage):
         ),
         StreamFieldPanel("content"),
     ]
+
 
 
 
