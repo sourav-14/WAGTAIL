@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^api/v2/',api_router.urls),
      
     url(r'^sitemap.xml$',sitemap),
+    url(r'', include('allauth.urls')),
 
     url(r"", include(wagtail_urls)),
 

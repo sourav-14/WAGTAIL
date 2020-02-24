@@ -140,6 +140,11 @@ class BlogListingPage(RoutablePageMixin,Page):
         help_text = 'Overwrites the default title'
     )
 
+    content_panels = Page.content_panels + [
+        FieldPanel("custom_title"),
+    ]
+
+
     def get_context(self,request,*args,**kwargs):
 
         context = super().get_context(request,*args,**kwargs)
@@ -163,17 +168,30 @@ class BlogListingPage(RoutablePageMixin,Page):
         return context
 
 
+    @route(r"^category/(?P<cat_slug>[-\w]*)/$", name="category_view")
+    def category_view(self, request, cat_slug):
+        """Find blog posts based on a category."""
+        context = self.get_context(request)
 
-    content_panels = Page.content_panels + [
-        FieldPanel("custom_title"),
-    ]
+        try:
+            category = BlogCategory.objects.get(slug=cat_slug)
+        except Exception:
+            category = None
+
+        if category is None:
+            pass
+
+        context["posts"] = BlogDetailPage.objects.live().public().filter(categories__in=[category])
+        return render(request, "blog/latest_posts.html", context)
 
     @route(r'^latest/$',name="latestposts")
     def latest_blog_posts(self, request,*args,**kwargs,):
         context = self.get_context(request,*args,**kwargs)
-        context["latest_posts"] = BlogDetailPage.objects.live().public()[:1] 
+        context["latest_posts"] = BlogDetailPage.objects.live().public()[:3] 
 
         return render(request,"blog/latest_posts.html",context)
+
+
 
 
 

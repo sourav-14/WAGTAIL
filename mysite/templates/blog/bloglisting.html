@@ -12,7 +12,7 @@
         <h2>Categories</h2>
         {% for cat in categories %}
             <li>
-                <a href="?category={{ cat.slug }}">
+                <a href="{{self..url}}category/{{ cat.slug }}/">
                     {{ cat.name }}
                     </a>
             </li>
