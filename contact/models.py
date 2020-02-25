@@ -36,5 +36,4 @@ class ContactPage(WagtailCaptchaEmailForm):
                 ]),
             FieldPanel('subject')
         ],heading="Email-Setttings"),
-
     ]

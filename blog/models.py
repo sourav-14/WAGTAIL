@@ -125,7 +125,6 @@ register_snippet(BlogCategory)
 class BlogListingPage(RoutablePageMixin,Page):
 
     template = "blog/bloglisting.html"
-    #ajax_template = "blog/blog_ajax_listing.html"
     max_count = 1
 
     subpage_types =[
@@ -151,7 +150,7 @@ class BlogListingPage(RoutablePageMixin,Page):
         all_posts = BlogDetailPage.objects.live().public().order_by("-first_published_at") 
         
     
-        paginator = Paginator(all_posts,2)
+        paginator = Paginator(all_posts,3)
 
         page = request.GET.get("page")
         try:
@@ -181,7 +180,7 @@ class BlogListingPage(RoutablePageMixin,Page):
         if category is None:
             pass
 
-        context["posts"] = BlogDetailPage.objects.live().public().filter(categories__in=[category])
+        context["latest_posts"] = BlogDetailPage.objects.live().public().filter(categories__in=[category])
         return render(request, "blog/latest_posts.html", context)
 
     @route(r'^latest/$',name="latestposts")
