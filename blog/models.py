@@ -186,7 +186,7 @@ class ArticlePage(BlogDetailPage):
 class VideoBlogPage(BlogDetailPage):
 
     youtube_video_id = models.CharField(max_length=100)
-
+    
 
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
